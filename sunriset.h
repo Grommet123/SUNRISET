@@ -50,13 +50,13 @@ typedef __UINT64_TYPE__ uint64_t;
 #ifndef bool
 #ifdef __INT8_TYPE__
 typedef uint8_t bool;
+#else // #ifdef __INT8_TYPE__
+typedef unsigned char bool;
+#endif // #ifdef __INT8_TYPE__
 typedef enum {
     false = 0,
     true = 1
 } bool_t;
-#else // #ifdef __INT8_TYPE__
-typedef unsigned char bool;
-#endif // #ifdef __INT8_TYPE__
 #endif // #ifndef bool
 #endif // #ifdef GCC
 
