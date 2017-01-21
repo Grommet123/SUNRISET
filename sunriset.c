@@ -73,56 +73,56 @@ int main(void)
         
         switch (inputChoice)
         {
-        case 1: // Washington DC
+        case WashingtonDC:
             lat = 39.48333d; 
             lon = -77.05d;
             strcpy(selectedLocation, "Washington DC");
             doDST = true;
             whereDST = USA;
             break;
-        case 2: // Los Angeles California
+        case LosAngelesCalifornia:
             lat = 34.0522d; 
             lon = -118.2437d;
             strcpy(selectedLocation, "Los Angeles California");
             doDST = true;
             whereDST = USA;
             break;
-        case 3: // New York City
+        case NewYorkCity:
             lat = 40.7128d; 
             lon = -74.0059d;
             strcpy(selectedLocation, "New York City");
             doDST = true;
             whereDST = USA;
             break;
-        case 4: // Seattle Washington
+        case SeattleWashington:
             lat = 47.6062d; 
             lon = -122.3321d;
             strcpy(selectedLocation, "Seattle Washington");
             doDST = true;
             whereDST = USA;
             break;
-        case 5: // Anchorage Alaska
+        case AnchorageAlaska:
             lat = 61.2181d; 
             lon = -149.9003d;
             strcpy(selectedLocation, "Anchorage Alaska");
             doDST = true;
             whereDST = USA;
             break;
-        case 6: // Honolulu Hawaii
+        case HonoluluHawaii:
             lat = 21.3069d; 
             lon = -157.8583d;
             strcpy(selectedLocation, "Honolulu Hawaii");
             doDST = false; // Does not observe DST
             whereDST = USA;
             break;
-        case 7: // Greenwich England
+        case GreenwichEngland:
             lat = 51.4826d; 
             lon = -0.0077d;
             strcpy(selectedLocation, "Greenwich England");
             doDST = false; // Does not observe DST
             whereDST = someWhereElse;
             break;
-        case 8: // Reykjavik Iceland
+        case ReykjavikIceland:
             lat = 64.135666d; 
             lon = -21.862675d;
             strcpy(selectedLocation, "Reykjavik Iceland");
@@ -130,14 +130,14 @@ int main(void)
             whereDST = someWhereElse;
             bypassGMT = true; // Same time zone as GMT
             break;
-        case 9: // Tokyo Japan
+        case TokyoJapan:
             lat = 35.6895d; 
             lon = 139.6917d;
             strcpy(selectedLocation, "Tokyo Japan");
             doDST = false; // Does not observe DST
             whereDST = Asia;
             break;
-        case 10: // Station Nord Greenland
+        case StationNordGreenland:
             lat = 81.716667d; 
             lon = 16.66666d;
             strcpy(selectedLocation, "Station Nord Greenland");
@@ -145,14 +145,14 @@ int main(void)
             doDST = false; // Does not observe DST
             whereDST = someWhereElse;
             break;
-        case 11: // Moscow Russia
+        case MoscowRussia:
             lat = 55.7558d; 
             lon = 37.6173d;
             strcpy(selectedLocation, "Moscow Russia");
             doDST = false; // Does not observe DST
             whereDST = someWhereElse;
             break;
-        case 12: // Sydney Australia
+        case SydneyAustralia:
             lat = -33.8688d; 
             lon = 151.2093d;
             strcpy(selectedLocation, "Sydney Australia");
@@ -160,21 +160,21 @@ int main(void)
             doDST = true;
             whereDST = someWhereElse;
             break;
-        case 13: // Rome Italy
+        case RomeItaly:
             lat = 41.9028d; 
             lon = 12.4964d;
             strcpy(selectedLocation, "Rome Italy");
             doDST = true;
             whereDST = CentralEurope;
             break;
-        case 14: // Hamburg Germany
+        case HamburgGermany:
             lat = 53.5511d; 
             lon =  9.9937d;
             strcpy(selectedLocation, "Hamburg Germany");
             doDST = true;
             whereDST = CentralEurope;
             break;
-        case 15: // Alert Canada
+        case AlertCanada:
             lat = 82.5018d; 
             lon = -62.34811d;
             strcpy(selectedLocation, "Alert Canada");
@@ -182,7 +182,7 @@ int main(void)
             doDST = true;
             whereDST = USA; // Same time zone as ET
             break;
-        case 16: // Enter any location
+        case Enteranylocation:
             // Set default info
             lat = 39.48333d; // Washington DC
             lon = -77.05d;
@@ -348,7 +348,7 @@ int main(void)
             if(astr_endI > 12) astr_endI -= 12;
         }
         
-        printf("Sun at south %d hours UTC\n\n", (riseI+setI)/2);
+//        printf("Sun at south %d hours UTC\n\n", (riseI+setI)/2);
 
         printf( "Day length:                 %5.2f hours\n", daylen );
         printf( "With civil twilight         %5.2f hours\n", civlen );
