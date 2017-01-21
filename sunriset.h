@@ -61,14 +61,32 @@ typedef enum {
 #endif // #ifdef GCC
 
 typedef enum {
-    USA           = 0,
-    CentralEurope = 1,
-    Asia          = 2,
-    Australia     = 3,
-    someWhereElse = 4,
-    noWhere = 5
+    USA,
+    CentralEurope,
+    Asia,
+    Australia,
+    someWhereElse,
+    noWhere
 } whereDST_t;
 
+typedef enum {
+    WashingtonDC = 1,
+    LosAngelesCalifornia,
+    NewYorkCity,
+    SeattleWashington,
+    AnchorageAlaska,
+    HonoluluHawaii,
+    GreenwichEngland,
+    ReykjavikIceland,
+    TokyoJapan,
+    StationNordGreenland,
+    MoscowRussia,
+    SydneyAustralia,
+    RomeItaly,
+    HamburgGermany,
+    AlertCanada,
+    Enteranylocation
+} inputSelection_t;
 
 /* A macro to compute the number of days elapsed since 2000 Jan 0.0 */
 /* (which is equal to 1999 Dec 31, 0h UT)                           */
@@ -79,7 +97,7 @@ typedef enum {
 /* Some conversion factors between radians and degrees */
 
 #ifndef PI
-#define PI        3.1415926535897932384
+#define PI 3.1415926535897932384
 #endif
 
 #define RADEG     ( 180.0 / PI )
