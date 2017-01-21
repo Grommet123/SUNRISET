@@ -281,8 +281,7 @@ int main(void)
         nautlen = day_nautical_twilight_length(year, month, day, lon, lat);
         astrlen = day_astronomical_twilight_length(year, month, day, lon, lat);
 
-        rs   = sun_rise_set         ( year, month, day, lon, lat,
-        &rise, &set );
+        rs = sun_rise_set( year, month, day, lon, lat, &rise, &set );
         // Convert UTC sunrise time to local sunrise time
         int riseI = (int)round(rise);
         int setI = (int)round(set);
@@ -307,14 +306,13 @@ int main(void)
         }
         
         
-        civ  = civil_twilight       ( year, month, day, lon, lat,
-        &civ_start, &civ_end );
+        civ = civil_twilight( year, month, day, lon, lat, &civ_start, &civ_end );
         // Convert UTC civ_start time to local civ_start time
         int civ_startI = (int)round(civ_start);
         int civ_endI = (int)round(civ_end);
         (void) convertToLocal(&civ_startI, &year, &month, &day, lon, false, doDST, whereDST, &UTCOffset);
         // Convert UTC civ_end time to local civ_end time
-       (void) convertToLocal(&civ_endI, &year, &month, &day, lon, false, doDST, whereDST, &UTCOffset);
+        (void) convertToLocal(&civ_endI, &year, &month, &day, lon, false, doDST, whereDST, &UTCOffset);
         if(civ_startI >= 12) { // Convert to 12 hour format
             if(civ_startI > 12) civ_startI -= 12;
         }
@@ -322,8 +320,7 @@ int main(void)
             if(civ_endI > 12) civ_endI -= 12;
         }
 
-        naut = nautical_twilight    ( year, month, day, lon, lat,
-        &naut_start, &naut_end );
+        naut = nautical_twilight( year, month, day, lon, lat, &naut_start, &naut_end );
         // Convert UTC naut_start time to local naut_start time
         int naut_startI = (int)round(naut_start);
         int naut_endI = (int)round(naut_end);
@@ -338,7 +335,6 @@ int main(void)
         }
         
         astr = astronomical_twilight( year, month, day, lon, lat, &astr_start, &astr_end );
-
         // Convert UTC astr_start time to local astr_start time
         int astr_startI = (int)round(astr_start);
         int astr_endI = (int)round(astr_end);
@@ -352,7 +348,7 @@ int main(void)
             if(astr_endI > 12) astr_endI -= 12;
         }
         
-        //            printf("Sun at south %5.2fh UTC\n\n", (rise+set)/2.0d);
+        printf("Sun at south %d hours UTC\n\n", (riseI+setI)/2);
 
         printf( "Day length:                 %5.2f hours\n", daylen );
         printf( "With civil twilight         %5.2f hours\n", civlen );
