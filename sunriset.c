@@ -1,12 +1,12 @@
 /*
+SUNRISET.C - computes Sun rise/set times, start/end of twilight, and
+            the length of the day at any date and latitude
+
    This version modified by GK Grotsky
    1/20/2017
 
    +++Date last modified: 05-Jul-1997
    Updated comments, 05-Aug-2013
-
-SUNRISET.C - computes Sun rise/set times, start/end of twilight, and
-            the length of the day at any date and latitude
 
 Written as DAYLEN.C, 1989-08-16
 
@@ -35,8 +35,7 @@ int main(void)
     bool defaultLocation = false;
     bool doDST = true;
     bool bypassGMT = false;
-    bool addOffset = false;
-    bool sameasET = false;
+    bool sameAsET = false;
     whereDST_t whereDST = USA;
 
     double lon = -77.05d, lat = 39.48333d; // Washington DC
@@ -128,14 +127,14 @@ int main(void)
             lon = -0.0077d;
             strcpy(selectedLocation, "Greenwich England");
             doDST = false; // Does not observe DST
-            whereDST = someWhereElse;
+            whereDST = noDSTObserved;
             break;
         case ReykjavikIceland:
             lat = 64.135666d; 
             lon = -21.862675d;
             strcpy(selectedLocation, "Reykjavik Iceland");
             doDST = false; // Does not observe DST
-            whereDST = someWhereElse;
+            whereDST = noDSTObserved;
             bypassGMT = true; // Same time zone as GMT
             break;
         case TokyoJapan:
@@ -151,22 +150,21 @@ int main(void)
             strcpy(selectedLocation, "Station Nord Greenland");
             bypassGMT = true; // Same time zone as GMT
             doDST = false; // Does not observe DST
-            whereDST = someWhereElse;
+            whereDST = noDSTObserved;
             break;
         case MoscowRussia:
             lat = 55.7558d; 
             lon = 37.6173d;
             strcpy(selectedLocation, "Moscow Russia");
             doDST = false; // Does not observe DST
-            whereDST = someWhereElse;
+            whereDST = noDSTObserved;
             break;
         case SydneyAustralia:
             lat = -33.8688d; 
             lon = 151.2093d;
             strcpy(selectedLocation, "Sydney Australia");
-            addOffset = true; // Australia has it own DST which I'm not going to implement now :-(
             doDST = true;
-            whereDST = someWhereElse;
+            whereDST = SouthEasternAustralia;
             break;
         case RomeItaly:
             lat = 41.9028d; 
@@ -186,7 +184,7 @@ int main(void)
             lat = 82.5018d; 
             lon = -62.34811d;
             strcpy(selectedLocation, "Alert Canada");
-            sameasET = true; // Same time zone as ET
+            sameAsET = true; // Same time zone as ET
             doDST = true;
             whereDST = USA; // Same time zone as ET
             break;
@@ -244,14 +242,9 @@ int main(void)
                 DST = convertToLocal(&hours, &year, &month, &day, 0.0d, true, doDST, whereDST, &UTCOffset);
                 bypassGMT = false;
             }
-            else if(addOffset) {
-                hours += 1;
-                if(hours > 12) day += 1;
-                addOffset = false;
-            }
-            else if(sameasET) {
+            else if(sameAsET) {
                 DST = convertToLocal(&hours, &year, &month, &day, -77.05d, true, doDST,  whereDST, &UTCOffset);
-                sameasET = false;
+                sameAsET = false;
             }
             else {
                 DST = convertToLocal(&hours, &year, &month, &day, lon, true, doDST, whereDST, &UTCOffset);					  
@@ -750,9 +743,9 @@ unsigned int dayOfWeek(unsigned int year, unsigned int month, unsigned int day)
 /* Ripped off from Stackoverflow
 http://stackoverflow.com/questions/5590429/calculating-daylight-saving-time-from-only-date
 
-Check to see if it's Daylight Savings Time (DST)
+Check to see if it's Daylight Savings Time (DST) in USA
 */
-bool IsDST(unsigned int day, unsigned int month , unsigned int DOW)
+bool isDSTUSA(unsigned int day, unsigned int month , unsigned int DOW)
 {
     // Make Day of Week (DOW) match with what Stackoverflow suggests
     // for DOW (Sunday = 0 to Saturday = 6)
@@ -768,21 +761,87 @@ bool IsDST(unsigned int day, unsigned int month , unsigned int DOW)
     default: break;
     }
     // January, February, and December are out
-    if(month < 3 || month > 11) {
-        return false;
-    }
+    if(month < 3 || month > 11) return false;
     // April to October are in
-    if(month > 3 && month < 11) {
-        return true;
-    }
+    if(month > 3 && month < 11) return true;
+    
     int previousSunday = (int)(day - DOW);
+    
     // In march, we are DST if our previous Sunday was on or after the 8th
-    if(month == 3) {
-        return previousSunday >= 8;
-    }
+    if(month == 3) return previousSunday >= 8;
+
     // In November we must be before the first Sunday to be DST
     // That means the previous Sunday must be before the 1st
     return previousSunday <= 0;
+}
+
+/* Ripped off from Stackoverflow
+http://stackoverflow.com/questions/5590429/calculating-daylight-saving-time-from-only-date
+
+Check to see if it's Daylight Savings Time (DST) in Central Europe
+*/
+bool IsDSTCentralEurope(int day, int month, int DOW)
+{
+    // Make Day of Week (DOW) match with what Stackoverflow suggests
+    // for DOW (Sunday = 0 to Saturday = 6)
+    switch (DOW)
+    {
+    case 6:  DOW = 0; break; // Sun
+    case 7:  DOW = 1; break; // Mon
+    case 1:  DOW = 2; break; // Tue
+    case 2:  DOW = 3; break; // Wed
+    case 3:  DOW = 4; break; // Thu
+    case 4:  DOW = 5; break; // Fri
+    case 5:  DOW = 6; break; // Sat
+    default: break;
+    }
+    // January, February, November, and December are out
+    if(month < 3 || month > 10)  return false; 
+    // April to September are in
+    if(month > 3 && month < 10)  return true; 
+
+    int previousSunday = day - DOW;
+
+    // In march, we are DST if our previous Sunday was on or after the 25th
+    if(month == 3) return previousSunday >= 25;
+    // In October we must be before the first Sunday to be DST
+    // That means the previous Sunday must be before the 1st
+    if(month == 10) return previousSunday < 25;
+
+    return false; // this line never gonna happend
+}
+/*
+Check to see if it's Daylight Savings Time (DST) in South Eastern Australia
+*/
+bool IsDSTSouthEasternAustralia(int day, int month, int DOW)
+{
+    // Make Day of Week (DOW) match with what Stackoverflow suggests
+    // for DOW (Sunday = 0 to Saturday = 6)
+    switch (DOW)
+    {
+    case 6:  DOW = 0; break; // Sun
+    case 7:  DOW = 1; break; // Mon
+    case 1:  DOW = 2; break; // Tue
+    case 2:  DOW = 3; break; // Wed
+    case 3:  DOW = 4; break; // Thu
+    case 4:  DOW = 5; break; // Fri
+    case 5:  DOW = 6; break; // Sat
+    default: break;
+    }
+    // January, February, March, October, November and December are in
+    if(month < 4 || month > 9)  return true; 
+    // May to October are out
+    if(month > 4 && month < 9)  return false; 
+
+    int previousSunday = day - DOW;
+
+    // In April, we are ST if our previous Sunday was on or after the 2nd
+    if(month == 4) return previousSunday >= 2;
+    // In September we must be before the first Sunday to be DST
+    // That means the previous Sunday must be before the 1st
+    if(month == 9) return previousSunday < 2;
+
+    return false; // this line never gonna happend
 }
 
 /* Convert UTC time and date to local time and date
@@ -790,9 +849,7 @@ Difference between UTC time/date (at Greenwich) and local time/date is 15 minute
 per 1 degree of longitude. See the following:
 http://www.edaboard.com/thread101516.html
 */
-bool convertToLocal(int* hour, int* year, int* month,
-int* day, double lon, bool convertDate,
-bool doDST, whereDST_t whereDST, int* pUTCOffset) {
+bool convertToLocal(int* hour, int* year, int* month, int* day, double lon, bool convertDate, bool doDST, whereDST_t whereDST, int* pUTCOffset) {
 
     int UTCOffset = 0;
     int tempUTCOffset = 0;
@@ -805,22 +862,21 @@ bool doDST, whereDST_t whereDST, int* pUTCOffset) {
     {
     case USA:
         // Get Daylight Saving Time (DST) or Standard Time (ST) for USA
-        DST = IsDST(*day, *month, DOW);
+        DST = isDSTUSA(*day, *month, DOW);
         break;
     case CentralEurope:
         // Get Daylight Saving Time (DST) or Standard Time (ST) for Central Europe
         DST = IsDSTCentralEurope(*day, *month, DOW);
         break;
+    case SouthEasternAustralia:
+        DST = IsDSTSouthEasternAustralia(*day, *month, DOW);
+        break;
     case Asia:
         // Not yet implemented
         DST = false;
         break;
-    case Australia:
-        // Not yet implemented
-        DST = false;
-        break;
-    case someWhereElse:
-        // Not yet implemented
+    case noDSTObserved:
+        // No DST observed
         DST = false;
         break;
     case noWhere:
@@ -836,17 +892,17 @@ bool doDST, whereDST_t whereDST, int* pUTCOffset) {
     else {
         UTCOffset = (int)(((int)lon / 15)); // UTC offset 
     }
-    tempUTCOffset = UTCOffset;
     if(UTCOffset < 0) {
         // West of Greenwich, subtract
         UTCOffset = abs(UTCOffset); // Make offset positive
         if(DST && convertDate && doDST) --UTCOffset; // Compensate for DST
         if(*hour <= UTCOffset) *hour += 24;
         *hour -= UTCOffset; // Subtract offset
+        tempUTCOffset = -UTCOffset;
     }
     else if(UTCOffset > 0) {
         // East of Greenwich, add
-        if(DST && convertDate && doDST) --UTCOffset; // Compensate for DST
+        if(DST && convertDate && doDST) ++UTCOffset; // Compensate for DST
         *hour += UTCOffset; // Add offset
         if(*hour >= 24) {
             *hour -= 24;
@@ -855,6 +911,7 @@ bool doDST, whereDST_t whereDST, int* pUTCOffset) {
         else if((24 - *hour) <= UTCOffset) {
             if(convertDate) *day += 1;
         }
+        tempUTCOffset = UTCOffset;
     }
     *pUTCOffset = tempUTCOffset;
 
@@ -915,18 +972,3 @@ char* getDayOfWeek(char* inChar, int day)
     }
     return (inChar);
 }
-
-#if 1
-bool IsDSTCentralEurope(int day, int month, int DOW)
-{
-    if(month < 3 || month > 10)  return false; 
-    if(month > 3 && month < 10)  return true; 
-
-    int previousSunday = day - DOW;
-
-    if(month == 3) return previousSunday >= 25;
-    if(month == 10) return previousSunday < 25;
-
-    return false; // this line never gonna happend
-}
-#endif
