@@ -1,8 +1,9 @@
-/* +++Date last modified: 05-Jul-1997
-   Updated comments, 05-Aug-2013
-
+/*
    This version modified by GK Grotsky
    1/20/2017
+
+   +++Date last modified: 05-Jul-1997
+   Updated comments, 05-Aug-2013
 
 SUNRISET.C - computes Sun rise/set times, start/end of twilight, and
             the length of the day at any date and latitude
@@ -14,7 +15,6 @@ Modified to SUNRISET.C, 1992-12-01
 (c) Paul Schlyter, 1989, 1992
 
 Released to the public domain by Paul Schlyter, December 1992
-
 
 */
 
@@ -46,23 +46,24 @@ int main(void)
     int    rs, civ, naut, astr;
     char buf[80];
     char newDay[10];
-    char displayChoices[] = "\n\
+    char displayChoices[] = {"\n\
     1)  Washington DC\n\
     2)  Los Angeles California\n\
     3)  New York City\n\
     4)  Seattle Washington\n\
     5)  Anchorage Alaska\n\
     6)  Honolulu Hawaii\n\
-    7)  Greenwich England\n\
-    8)  Reykjavik Iceland\n\
-    9)  Tokyo Japan\n\
-    10) Station Nord Greenland\n\
-    11) Moscow Russia\n\
-    12) Sydney Australia\n\
-    13) Rome Italy\n\
-    14) Hamburg Germany\n\
-    15) Alert Canada\n\
-    16) Enter any location\n";
+    7)  Flagstaff Arizona\n\
+    8)  Greenwich England\n\
+    9)  Reykjavik Iceland\n\
+    10) Tokyo Japan\n\
+    11) Station Nord Greenland\n\
+    12) Moscow Russia\n\
+    13) Sydney Australia\n\
+    14) Rome Italy\n\
+    15) Hamburg Germany\n\
+    16) Alert Canada\n\
+    17) Enter any location\n"};
 
     while (1)
     {
@@ -112,6 +113,13 @@ int main(void)
             lat = 21.3069d; 
             lon = -157.8583d;
             strcpy(selectedLocation, "Honolulu Hawaii");
+            doDST = false; // Does not observe DST
+            whereDST = USA;
+            break;
+        case FlagstaffArizona:
+            lat = 35.1983d; 
+            lon = -111.6513d;
+            strcpy(selectedLocation, "Flagstaff Arizona");
             doDST = false; // Does not observe DST
             whereDST = USA;
             break;
@@ -261,7 +269,7 @@ int main(void)
         }
 
         printf("\nThe location is %s (Latitude %5.5f, Longitude %5.5f)\n", selectedLocation, lat, lon);
-        printf("The date is %s/%s/%d\t\t%s\n", convertIntToChar(monthS, month), convertIntToChar(dayS, day), year, getDayOfWeek(newDay, (dayOfWeek(year, month, day)) - 1));
+        printf("The date is %d/%s/%d\t\t%s\n", month, convertIntToChar(dayS, day), year, getDayOfWeek(newDay, (dayOfWeek(year, month, day)) - 1));
         printf("The time is %s:%s:%s%s\t\t", convertIntToChar(hoursS, hours), convertIntToChar(minutesS, minutes), convertIntToChar(secondsS, seconds),
         AMPM);
         if(defaultLocation) {
@@ -272,7 +280,7 @@ int main(void)
             printf("%s\n", (DST) ? "Daylight Standard Time" : "Standard Time");
         }
         else {
-            printf("%s %s\n", selectedLocation, "does not observe DST");
+            printf("%s %s\n", selectedLocation, "does not observe Daylight Standard Time");
         }
         printf("UTC %s%d hours\t\t\t", (UTCOffset >= 0) ? "+" : "-", abs(UTCOffset));
         
