@@ -1,12 +1,12 @@
 /*
+SUNRISET.C - computes Sun rise/set times, start/end of twilight, and
+            the length of the day at any date and latitude
+
    This version modified by GK Grotsky
    1/20/2017
 
    +++Date last modified: 05-Jul-1997
    Updated comments, 05-Aug-2013
-
-SUNRISET.C - computes Sun rise/set times, start/end of twilight, and
-            the length of the day at any date and latitude
 
 Written as DAYLEN.C, 1989-08-16
 
@@ -66,9 +66,9 @@ typedef enum {
 typedef enum {
     USA,
     CentralEurope,
+    SouthEasternAustralia,
     Asia,
-    Australia,
-    someWhereElse,
+    noDSTObserved,
     noWhere
 } whereDST_t;
 
@@ -195,16 +195,18 @@ double rev180( double x );
 
 double GMST0( double d );
 
-unsigned int dayOfWeek(unsigned int year, unsigned int month, unsigned int day);
+unsigned int dayOfWeek(unsigned int year, unsigned int month, unsigned int day); 
 
-bool convertToLocal(int* hour, int* year, int* month,
-int* day, double lon, bool convertDate,
-bool doDST, whereDST_t whereDST, int* pUTCOffset);
+bool IsDSTUSA(int day, int month, int DOW);
+
+bool IsDSTCentralEurope(int day, int month, int DOW);
+
+bool IsDSTSouthEasternAustralia(int day, int month, int DOW);
+
+bool convertToLocal(int* hour, int* year, int* month, int* day, double lon, bool convertDate, bool doDST, whereDST_t whereDST, int* pUTCOffset);
 
 char* convertIntToChar(char* inChar, int toConvert);
 
 char* getDayOfWeek(char* inChar, int day);
-
-bool IsDSTCentralEurope(int day, int month, int DOW);
 
 #endif // #ifndef sunriset_h
