@@ -1,6 +1,9 @@
-/* +++Date last modified: 05-Jul-1997 */
-/* Updated comments, 05-Aug-2013 */
 /*
+   This version modified by GK Grotsky
+   1/20/2017
+
+   +++Date last modified: 05-Jul-1997
+   Updated comments, 05-Aug-2013
 
 SUNRISET.C - computes Sun rise/set times, start/end of twilight, and
             the length of the day at any date and latitude
@@ -76,6 +79,7 @@ typedef enum {
     SeattleWashington,
     AnchorageAlaska,
     HonoluluHawaii,
+    FlagstaffArizona,
     GreenwichEngland,
     ReykjavikIceland,
     TokyoJapan,
