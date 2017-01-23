@@ -89,6 +89,7 @@ typedef enum {
     RomeItaly,
     HamburgGermany,
     AlertCanada,
+    TelAvivIsrael,
     Enteranylocation
 } inputSelection_t;
 
