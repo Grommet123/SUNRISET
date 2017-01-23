@@ -195,7 +195,7 @@ double rev180( double x );
 
 double GMST0( double d );
 
-unsigned int dayOfWeek(unsigned int year, unsigned int month, unsigned int day); 
+unsigned int dayOfWeek(unsigned int year, unsigned int month, unsigned int day);
 
 bool IsDSTUSA(int day, int month, int DOW);
 
