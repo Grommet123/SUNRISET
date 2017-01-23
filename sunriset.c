@@ -222,9 +222,9 @@ int main(void)
             whereDST = USA;
             break;
         };
-        
+#ifdef _WIN32        
         system("cls"); // Clear the screen
-
+#endif
         bool DST;
         // Get UTC (GMT) time and date
         if(!defaultLocation) {
@@ -423,7 +423,9 @@ int main(void)
         if((strcmp(inputAnswer, "n")  == 0) || (strcmp(inputAnswer, "N") == 0)) {
             return 0;
         }
+#ifdef _WIN32        
         system("cls"); // Clear the screen
+#endif
     } // while (1)
 }
 
@@ -902,7 +904,7 @@ bool convertToLocal(int* hour, int* year, int* month, int* day, double lon, bool
     }
     else if(UTCOffset > 0) {
         // East of Greenwich, add
-        if(DST && convertDate && doDST) ++UTCOffset; // Compensate for DST
+        if(DST && convertDate && doDST) UTCOffset++; // Compensate for DST
         *hour += UTCOffset; // Add offset
         if(*hour >= 24) {
             *hour -= 24;
