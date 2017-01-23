@@ -62,7 +62,8 @@ int main(void)
     14) Rome Italy\n\
     15) Hamburg Germany\n\
     16) Alert Canada\n\
-    17) Enter any location\n"};
+    17) Tel Aviv Israel\n\
+    18) Enter any location\n"};
 
     while (1)
     {
@@ -187,6 +188,13 @@ int main(void)
             sameAsET = true; // Same time zone as ET
             doDST = true;
             whereDST = USA; // Same time zone as ET
+            break;
+        case TelAvivIsrael:
+            lat = 32.0853d; 
+            lon = 34.7818d;
+            strcpy(selectedLocation, "Tel Aviv Israel");
+            doDST = true;
+            whereDST = CentralEurope; // Follows Central Europe DST rules (go figure:-)
             break;
         case Enteranylocation:
             // Set default info
