@@ -90,7 +90,7 @@ typedef enum {
     HamburgGermany,
     AlertCanada,
     TelAvivIsrael,
-    Enteranylocation
+    EnterAnyLocation
 } inputSelection_t;
 
 /* A macro to compute the number of days elapsed since 2000 Jan 0.0 */
