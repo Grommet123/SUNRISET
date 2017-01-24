@@ -68,7 +68,7 @@ int main(void)
     while (1)
     {
         printf("%s", displayChoices);
-        printf("Enter a number from the above locations: " );
+        printf("Enter a number from the list above: " );
         fgets(buf, sizeof(buf), stdin);
         sscanf(buf, "%d", &inputChoice);
         
@@ -143,7 +143,7 @@ int main(void)
             lon = 139.6917d;
             strcpy(selectedLocation, "Tokyo Japan");
             doDST = false; // Does not observe DST
-            whereDST = Asia;
+            whereDST = noDSTObserved;
             break;
         case StationNordGreenland:
             lat = 81.716667d; 
@@ -194,9 +194,9 @@ int main(void)
             lon = 34.7818d;
             strcpy(selectedLocation, "Tel Aviv Israel");
             doDST = true;
-            whereDST = CentralEurope; // Follows Central Europe DST rules (go figure:-)
+            whereDST = CentralEurope; // Follows Central Europe DST rules (go figure :-))
             break;
-        case Enteranylocation:
+        case EnterAnyLocation:
             // Set default info
             lat = 39.48333d; // Washington DC
             lon = -77.05d;
