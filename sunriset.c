@@ -275,7 +275,6 @@ int main(void)
         AMPM);
         if(defaultLocation) {
             printf("\n");
-            defaultLocation = false;
         }
         else if(doDST) {
             printf("%s\n", (DST) ? "Daylight Standard Time" : "Standard Time");
@@ -283,8 +282,14 @@ int main(void)
         else {
             printf("%s %s\n", selectedLocation, "does not observe Daylight Standard Time");
         }
-        printf("UTC %s%d hours\t\t\t", (UTCOffset >= 0) ? "+" : "-", abs(UTCOffset));
-        
+
+        if(defaultLocation) {
+            printf("UTC %s%d hours\n", (UTCOffset >= 0) ? "+" : "-", abs(UTCOffset));
+            defaultLocation = false;
+        }
+        else {
+            printf("UTC %s%d hours\t\t\t", (UTCOffset >= 0) ? "+" : "-", abs(UTCOffset));
+        }
         daylen  = day_length(year, month, day, lon, lat);
         civlen  = day_civil_twilight_length(year, month, day, lon, lat);
         nautlen = day_nautical_twilight_length(year, month, day, lon, lat);
