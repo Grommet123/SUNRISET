@@ -364,10 +364,10 @@ int main(void)
         
 //        printf("Sun at south %d hours UTC\n\n", (riseI+setI)/2);
 
-        printf( "Day length:                 %5.2f hours\n", daylen );
-        printf( "With civil twilight         %5.2f hours\n", civlen );
-        printf( "With nautical twilight      %5.2f hours\n", nautlen );
-        printf( "With astronomical twilight  %5.2f hours\n\n", astrlen );
+        printf( "Day length:                 %5.2f hours.\n", daylen );
+        printf( "With civil twilight         %5.2f hours. Starts/ends when the Sun's center is 6  degrees below the horizon\n", civlen );
+        printf( "With nautical twilight      %5.2f hours. Starts/ends when the Sun's center is 12 degrees below the horizon\n", nautlen );
+        printf( "With astronomical twilight  %5.2f hours. Starts/ends when the Sun's center is 18 degrees below the horizon\n\n", astrlen );
         
         printf( "Length of twilight: civil   %5.2f hours\n", (civlen-daylen)/2.0);
         printf( "                  nautical  %5.2f hours\n", (nautlen-daylen)/2.0);
@@ -428,7 +428,7 @@ int main(void)
             printf( "Never as bright as astronomical twilight\n" );
             break;
         }
-#endif
+#endif // #ifdef DISPLAYALL
         char inputAnswer[2];
         printf("\nAnother (Y/N)?: ");
         fgets(inputAnswer, sizeof(inputAnswer), stdin);
